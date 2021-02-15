@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>color selector exercise</title>
+  </head>
+
+  <style>
+    .colorbox {
+      height: 200px;
+      width: 200px;
+      background-color: rgb(230, 94, 0);
+    }
+
+    main {
+      margin-top: 15%;
+      display: flex;
+      flex-direction: row-reverse;
+      justify-content: center;
+    }
+
+    #colorpickerwrapper {
+      padding: 50px 15px;
+    }
+  </style>
+
+  <body>
+    <main>
+      <div id="colorpickerwrapper">
+        <p>Select color</p>
+        <input id="colorpicker" type="color" value="#ff5e00" />
+      </div>
+      <div>
+        <div class="colorbox"></div>
+        <p id="hex">Hex: #ff5e00</p>
+        <p id="rgb">RGB: 230, 94, 0</p>
+        <p id="hsl">HSL: 22, -101, 12750</p>
+      </div>
+    </main>
+
+    <script src="color_selector.js"></script>
+  </body>
+</html>
