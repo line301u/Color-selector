@@ -3,51 +3,59 @@
 window.addEventListener("DOMContentLoaded", getValue);
 
 function getValue() {
-  colorpicker.addEventListener("input", colorTheBox);
+  colorpicker.addEventListener("input", function (event) {
+    let hexNumber = ShowColorBox(event);
+    showHex(hexNumber);
+    console.log(hexNumber);
+    let rgb = modelHexToRgb(hexNumber);
+    console.log(rgb);
+    showRgb(rgb);
+    let css = rgbToCSS(rgb);
+    console.log(css);
+    ShowColorBoxSecond(css);
+    let hsl = getHslValue(rgb);
+    showHsl(hsl);
+    console.log(hsl);
+  });
 }
 
-function colorTheBox(event) {
-  let hexValue = (document.querySelector(".colorbox").style.backgroundColor = event.target.value);
-  console.log(hexValue);
-  showHex(hexValue);
-  convertHexToRgb(hexValue);
+function ShowColorBox(event) {
+  document.querySelector(".colorbox").style.backgroundColor = event.target.value;
+  let hexValue = event.target.value;
+  return hexValue;
 }
 
-function showHex(hexValue) {
-  document.getElementById("hex").innerHTML = "HEX: " + hexValue;
+function showHex(hexNumber) {
+  document.getElementById("hex").innerHTML = "HEX: " + hexNumber;
 }
 
-function convertHexToRgb(hexValue) {
-  const r = hexValue.substring(1, 3);
-  const g = hexValue.substring(3, 5);
-  const b = hexValue.substring(5, 7);
+function modelHexToRgb(hexNumber) {
+  const rgb = { r: "", g: "", b: "" };
+  rgb.r = Number.parseInt(hexNumber.substring(1, 3), 16);
+  rgb.g = Number.parseInt(hexNumber.substring(3, 5), 16);
+  rgb.b = Number.parseInt(hexNumber.substring(5, 7), 16);
 
-  const convertedR = Number.parseInt(r, 16);
-  const convertedG = Number.parseInt(g, 16);
-  const convertedB = Number.parseInt(b, 16);
-  showRgb(convertedR, convertedG, convertedB);
-  getHslValue(convertedR, convertedG, convertedB);
-  //   console.log(`${convertedR}, ${convertedG}, ${convertedB}`);
+  return rgb;
 }
 
-function showRgb(convertedR, convertedG, convertedB) {
-  document.getElementById("rgb").innerHTML = `RGB: ${convertedR}, ${convertedG}, ${convertedB}`;
-}
+function getHslValue(rgb) {
+  rgb.r /= 255;
+  rgb.g /= 255;
+  rgb.b /= 255;
 
-function getHslValue(r, g, b) {
   let h, s, l;
 
-  const min = Math.min(r, g, b);
-  const max = Math.max(r, g, b);
+  const min = Math.min(rgb.r, rgb.g, rgb.b);
+  const max = Math.max(rgb.r, rgb.g, rgb.b);
 
   if (max === min) {
     h = 0;
-  } else if (max === r) {
-    h = 60 * (0 + (g - b) / (max - min));
+  } else if (max === rgb.r) {
+    h = 60 * (0 + (rgb.g - rgb.b) / (max - min));
   } else if (max === g) {
-    h = 60 * (2 + (b - r) / (max - min));
-  } else if (max === b) {
-    h = 60 * (4 + (r - g) / (max - min));
+    h = 60 * (2 + (rgb.b - rgb.r) / (max - min));
+  } else if (max === rgb.b) {
+    h = 60 * (4 + (rgb.r - rgb.g) / (max - min));
   }
 
   if (h < 0) {
@@ -66,9 +74,27 @@ function getHslValue(r, g, b) {
   l *= 100;
 
   //   console.log("hsl(%f,%f%,%f%)", h, s, l); // just for testing
-  showHsl(h, s, l);
+  // showHsl(h, s, l);
+
+  return `${h.toFixed(0)}, ${s.toFixed(0)}, ${l.toFixed(0)}`;
 }
 
-function showHsl(h, s, l) {
-  document.getElementById("hsl").innerHTML = `HSL: ${h.toFixed(0)}, ${s.toFixed(0)}, ${l.toFixed(0)}`;
+function showHsl(hsl) {
+  document.getElementById("hsl").innerHTML = hsl;
+}
+
+function showRgb(rgb) {
+  document.getElementById("rgb").innerHTML = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+}
+
+function rgbToCSS(rgb) {
+  rgb.r.toString();
+  rgb.g.toString();
+  rgb.b.toString();
+
+  return `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+}
+
+function ShowColorBoxSecond(css) {
+  document.querySelector("#colorboxSecond").style.backgroundColor = css;
 }
